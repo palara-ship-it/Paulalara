@@ -29,7 +29,7 @@
   }
 
   /* ── Foto de portada: 4 fotos, clic las recorre en ciclo ── */
-  $$('.slot img').forEach(img => {
+  $$('.slot img, img[data-fallback]').forEach(img => {
     const fail = () => {
       const fb = img.dataset.fallback;
       if (fb && !img.dataset.tried) { img.dataset.tried = '1'; img.src = fb; } else img.remove();
@@ -87,7 +87,7 @@
       const m = matchMedia('(max-width:820px)').matches;
       const H = stack.clientHeight;
       return m ? { H, BASE: 64, STRIDE: 70, DOCK: 70, CLOSED: Math.floor((H - 64 - 20) / 4) }
-               : { H, BASE: 90, STRIDE: 86, DOCK: 76, CLOSED: 190 };
+               : { H, BASE: 130, STRIDE: 86, DOCK: 76, CLOSED: 190 };
     };
     const yFor = (j, k, g) => k === 0 ? g.BASE + (j - 1) * g.CLOSED
       : j <= k ? g.BASE + (j - 1) * g.STRIDE : g.H - (4 - j + 1) * g.DOCK;
@@ -111,11 +111,8 @@
     });
     addEventListener('keydown', e => { if (e.key === 'Escape' && cur) go(0); });
     addEventListener('resize', () => render(cur));
-    // primer pintado sin animación
-    stack.style.setProperty('--x', 0);
     folders.forEach(f => f.style.transition = 'none');
     render(0);
     requestAnimationFrame(() => requestAnimationFrame(() => folders.forEach(f => f.style.transition = '')));
-    // enlaces de disciplinas (inicio / herramientas) abren la sección de proyectos
   }
 })();
